@@ -1,0 +1,477 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+{% block content %}
+  <section class="hero-slider-area hero-slider-area-style-two mt-5">
+    <div class="hero-slider-two owl-carousel owl-theme">
+        {% for slide in sliders %}
+            <div class="slider-item"
+                 style="background-image: url('{{ slide.image.url }}');
+                        background-size: cover;
+                        background-position: center;
+                        height: 400px;
+                        border-radius: 10px;
+                        margin-top: 20px;">
+
+                <div class="slider-overlay"
+                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                            background: rgba(0,0,0,0.3); border-radius: 10px;"></div>
+
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-lg-8">
+                            <div class="hero-slider-content text-white position-relative"
+                                 style="z-index: 2;">
+                                <h1 class="mb-3">{{ slide.title }}</h1>
+                                <p class="mb-4">{{ slide.description }}</p>
+                                <a href="{% url 'product:product-list' %}" class="btn btn-primary btn-lg">
+                                    <i class="ri-shopping-cart-line me-2"></i>
+                                    خرید کنید
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+    <section class="popular-categories-area pt-54 pb-30">
+        <div class="container">
+            <div class="section-title text-center mb-4">
+                <h2>دسته‌بندی‌های محبوب</h2>
+            </div>
+
+            <div class="row">
+                {% for category in categories|slice:":6" %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-img-top" style="height: 180px; overflow: hidden;">
+                                <a href="{% url 'product:category-products' pk=category.id %}">
+                                    {% if category.image %}
+                                        <img src="{{ category.image.url }}"
+                                             alt="{{ category.title }}"
+                                             class="img-fluid w-100 h-100"
+                                             style="object-fit: cover;">
+                                    {% else %}
+                                        <div class="h-100 w-100 bg-light d-flex align-items-center justify-content-center">
+                                            <i class="ri-folder-line fs-1 text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+
+                            <div class="card-body text-center d-flex flex-column">
+                                <h5 class="card-title mb-2">
+                                    <a href="{% url 'product:category-products' pk=category.id %}"
+                                       class="text-decoration-none text-dark">
+                                        {{ category.title }}
+                                    </a>
+                                </h5>
+                                <p class="text-muted mb-3">{{ category.products.count }} محصول</p>
+                                <a href="{% url 'product:category-products' pk=category.id %}"
+                                   class="btn btn-primary btn-sm mt-auto">
+                                    مشاهده
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="featured-products-area pb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                    <div class="featured-product-img bg-2 h-100 d-flex align-items-center justify-content-center"
+                         style="background: #f8f9fa; min-height: 400px;">
+                        <div class="featured-product-content text-center p-3">
+                            <span class="best" style="font-size: 24px; font-weight: bold;">بهترین معاملات</span>
+                            <a href="{% url 'product:product-list' %}" class="default-btn mt-3 d-inline-block">
+                                خرید کن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-12">
+                    <div class="section-title mb-3">
+                        <h2>محصولات ویژه</h2>
+                    </div>
+
+                    <div class="featured-product-wrap">
+                        <div class="featured-product-slider owl-carousel owl-theme">
+                            {% for product in featured_products %}
+                                <div class="single-products">
+                                    <div class="product-img position-relative">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <!-- در بخش featured_products و best_sellers: -->
+                                            {% if product.image %}
+                                                <img src="{{ product.image.url }}" alt="{{ product.title }}"
+                                                     class="img-fluid w-100" style="object-fit: cover; height: 250px;">
+                                            {% else %}
+                                                <img src="{% static 'images/default-product.png' %}" alt="محصول پیش‌فرض"
+                                                     class="img-fluid w-100"
+                                                     style="object-fit: cover; height: 250px; background: #f5f5f5;">
+                                            {% endif %}
+                                        </a>
+
+                                        {% if product.is_new %}
+                                            <span class="hot new">جدید</span>
+                                        {% elif product.best_seller %}
+                                            <span class="hot">پرفروش</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="product-content mt-2">
+                                        <a href="{{ product.get_absolute_url }}" class="title d-block text-truncate">
+                                            {{ product.title }}
+                                        </a>
+
+                                        <ul class="products-rating d-flex align-items-center mb-1">
+                                            {% for i in "12345" %}
+                                                <li><i class="ri-star-fill"></i></li>
+                                            {% endfor %}
+                                            <li class="ms-2">
+                                                <a href="{{ product.get_absolute_url }}">
+                                                    (0 مرور)
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                        <ul class="products-price d-flex align-items-center mb-2">
+                                            <li class="me-3">
+                                                {{ product.price }} تومان
+                                                {% if product.old_price %}
+                                                    <del>{{ product.old_price }} تومان</del>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                <span>{{ product.is_active|yesno:"در انبار,ناموجود" }}</span>
+                                            </li>
+                                        </ul>
+
+                                        <ul class="products-cart-wish-view d-flex gap-2">
+                                            <li>
+                                                <a href="{% url 'cart:add-to-cart' product.id %}" class="default-btn">
+                                                    <i class="ri-shopping-cart-line"></i> افزودن خرید
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'add-to-wishlist' product.id %}" class="wish-btn">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ product.get_absolute_url }}" class="eye-btn">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-center w-100 py-5">
+                                    <p>هیچ محصول ویژه‌ای برای نمایش وجود ندارد.</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="best-seller-area pb-30">
+        <div class="container">
+            <div class="section-title mb-3">
+                <h2>بهترین فروشندگان</h2>
+            </div>
+
+            <div class="best-product-slider owl-carousel owl-theme">
+                {% for product in best_sellers %}
+                    <div class="single-products">
+                        <div class="product-img position-relative">
+                            <a href="{{ product.get_absolute_url }}">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.title }}"
+                                         class="img-fluid w-100" style="object-fit: cover; height: 250px;">
+                                {% else %}
+                                    <img src="{% static 'images/default-product.png' %}" alt="محصول پیش‌فرض"
+                                         class="img-fluid w-100"
+                                         style="object-fit: cover; height: 250px; background: #f5f5f5;">
+                                {% endif %}
+                            </a>
+
+                            {% if product.on_sale %}
+                                <span class="hot">تخفیف</span>
+                            {% elif product.best_seller %}
+                                <span class="hot new">پرفروش</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="product-content mt-2">
+                            <a href="{{ product.get_absolute_url }}" class="title d-block text-truncate">
+                                {{ product.title }}
+                            </a>
+
+                            <ul class="products-rating d-flex align-items-center mb-1">
+                                {% for i in "12345" %}
+                                    <li><i class="ri-star-fill"></i></li>
+                                {% endfor %}
+                                <li class="ms-2">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        (0 مرور)
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <ul class="products-price d-flex align-items-center mb-2">
+                                <li class="me-3">
+                                    {{ product.price }} تومان
+                                    {% if product.old_price %}
+                                        <del>{{ product.old_price }} تومان</del>
+                                    {% endif %}
+                                </li>
+                                <li><span>{{ product.is_active|yesno:"در انبار,ناموجود" }}</span></li>
+                            </ul>
+
+                            <ul class="products-cart-wish-view d-flex gap-2">
+                                <li>
+                                    <a href="{% url 'cart:add-to-cart' product.id %}" class="default-btn">
+                                        افزودن به سبد خرید
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'add-to-wishlist' product.id %}" class="wish-btn">
+                                        <i class="ri-heart-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ product.get_absolute_url }}" class="eye-btn">
+                                        <i class="ri-eye-line"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center w-100 py-5">
+                        <p>هیچ محصول پرفروشی برای نمایش وجود ندارد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% if sale_offer %}
+        <section class="sale-offer-area pb-54">
+            <div class="container">
+                <div class="sale-discount-area rounded overflow-hidden position-relative"
+                     style="background-image: url('
+                             {% if sale_offer.image %}{{ sale_offer.image.url }}{% else %}{% static 'images/default-product.png' %}{% endif %}');
+                             background-size: cover; background-position: center; min-height: 320px">
+                    <div class="position-absolute top-0 start-0 w-100 h-100"
+                         style="background: rgba(0,0,0,0.45);">
+                    </div>
+                    <div class="discount-content position-relative text-center text-white d-flex flex-column justify-content-center align-items-center h-100 p-4">
+                        <h5 class="mb-2">🔥 از تخفیف ویژه برخوردار شوید</h5>
+                        <h3 class="mb-3 fw-bold">{{ sale_offer.title }}</h3>
+                        {% if sale_offer.old_price %}
+                            <p class="mb-3 fs-5">
+                                فقط امروز با تخفیف
+                                <span class="fw-bold">{{ sale_offer.price }} تومان</span>
+                                <del class="text-light ms-2">{{ sale_offer.old_price }} تومان</del>
+                            </p>
+                        {% endif %}
+                        <a href="{{ sale_offer.get_absolute_url }}" class="default-btn">
+                            مشاهده محصول
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    <section class="categories-area pb-54">
+        <div class="container">
+            <div class="categories-wrap tab products-details-tab">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="section-title">
+                            <h2>دسته بندی ها</h2>
+                        </div>
+                        <ul class="tabs">
+                            {% for category in categories %}
+                                <li>{{ category.title }}</li>
+                            {% empty %}
+                                <li>دسته‌بندی‌ای وجود ندارد</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="tab_content">
+                            {% for category in categories %}
+                                <div class="tabs_item">
+                                    <div class="categories-slider owl-carousel owl-theme">
+                                        {% for product in category.active_products %}
+                                            <div class="single-products new-arrivals">
+                                                <div class="product-img">
+                                                    <a href="{{ product.get_absolute_url }}">
+                                                        {% if product.image %}
+                                                            <img src="{{ product.image.url }}"
+                                                                 alt="{{ product.title }}">
+                                                        {% else %}
+                                                            <img src="{% static 'images/default-product.png' %}"
+                                                                 alt="محصول پیش‌فرض">
+                                                        {% endif %}
+                                                    </a>
+                                                    {% if product.is_new %}
+                                                        <span class="hot new">جدید</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="product-content">
+                                                    <a href="{{ product.get_absolute_url }}" class="title">
+                                                        {{ product.title }}
+                                                    </a>
+                                                    <ul class="products-rating">
+                                                        {% for i in "12345" %}
+                                                            <li><i class="ri-star-fill"></i></li>
+                                                        {% endfor %}
+                                                        <li><span>(0 بازدید)</span></li>
+                                                    </ul>
+                                                    <ul class="products-price">
+                                                        <li>
+                                                            {{ product.price }} تومان
+                                                            {% if product.old_price %}
+                                                                <del>{{ product.old_price }} تومان</del>
+                                                            {% endif %}
+                                                        </li>
+                                                    </ul>
+                                                    <ul class="products-cart-wish-view">
+                                                        <li>
+                                                            <a href="{% url 'cart:add-to-cart' product.id %}"
+                                                               class="default-btn">
+                                                                <i class="ri-shopping-cart-line"></i> افزودن خرید
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{% url 'add-to-wishlist' product.id %}"
+                                                               class="wish-btn">
+                                                                <i class="ri-heart-line"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ product.get_absolute_url }}" class="eye-btn">
+                                                                <i class="ri-eye-line"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% empty %}
+                                            <p class="text-center">این دسته محصولی ندارد.</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="our-blog-area pb-30">
+        <div class="container">
+            <div class="section-title d-flex justify-content-between align-items-center mb-4">
+                <h2>وبلاگ</h2>
+                <a href="{% url 'blog:blog-list' %}" class="read-more">
+                    مشاهده همه <i class="ri-arrow-left-line"></i>
+                </a>
+            </div>
+            <div class="row justify-content-center">
+                {% for blog in latest_blogs %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="single-blog shadow-sm rounded overflow-hidden h-100">
+                            <a href="{{ blog.get_absolute_url }}" class="d-block">
+                                {% if blog.image %}
+                                    <img src="{{ blog.image.url }}"
+                                         class="img-fluid w-100"
+                                         style="height:220px; object-fit:cover;"
+                                         alt="{{ blog.title }}">
+                                {% else %}
+                                    <div class="d-flex justify-content-center align-items-center"
+                                         style="height:220px; background:#f1f1f1;">
+                                        <span>بدون تصویر</span>
+                                    </div>
+                                {% endif %}
+                            </a>
+                            <div class="blog-content p-3 d-flex flex-column">
+                                <ul class="d-flex justify-content-between text-muted small mb-2">
+                                    <li>{{ blog.author|default:"مدیر سایت" }}</li>
+                                    <li>{{ blog.created_at|date:"d M Y" }}</li>
+                                </ul>
+                                <h3 style="font-size:18px; line-height:1.6;" class="mb-2">
+                                    <a href="{{ blog.get_absolute_url }}" class="text-dark">
+                                        {{ blog.title }}
+                                    </a>
+                                </h3>
+                                <p class="text-muted small mb-3">
+                                    {% if blog.short_description %}
+                                        {{ blog.short_description|truncatewords:15 }}
+                                    {% else %}
+                                        {{ blog.content|truncatewords:15|striptags }}
+                                    {% endif %}
+                                </p>
+                                <a href="{{ blog.get_absolute_url }}" class="default-btn mt-auto d-inline-block">
+                                    ادامه خواندن <i class="ri-arrow-left-line"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>مقاله‌ای برای نمایش وجود ندارد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="services-area pt-0 pb-30">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="single-services text-center h-100 shadow-sm rounded p-4">
+                        <div class="icon mb-3">
+                            <img src="{% static 'images/icon/support.png' %}"
+                                 alt="پشتیبانی مشتری"
+                                 style="width:60px; height:60px; object-fit:contain;">
+                        </div>
+                        <h3 style="font-size:18px;">پشتیبانی مشتری</h3>
+                        <p class="text-muted small mb-0">۲۴ ساعته در ۷ روز هفته همراه شما هستیم</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="single-services text-center h-100 shadow-sm rounded p-4">
+                        <div class="icon mb-3">
+                            <img src="{% static 'images/icon/payment.png' %}"
+                                 alt="پرداخت امن"
+                                 style="width:60px; height:60px; object-fit:contain;">
+                        </div>
+                        <h3 style="font-size:18px;">پرداخت‌های امن</h3>
+                        <p class="text-muted small mb-0">پرداخت آنلاین با بهترین و امن‌ترین روش‌ها</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="single-services text-center h-100 shadow-sm rounded p-4">
+                        <div class="icon mb-3">
+                            <img src="{% static 'images/icon/network.png' %}"
+                                 alt="تحویل جهانی"
+                                 style="width:60px; height:60px; object-fit:contain;">
+                        </div>
+                        <h3 style="font-size:18px;">تحویل در سراسر کشور</h3>
+                        <p class="text-muted small mb-0">سفارش شما سریع و مطمئن به دستتان می‌رسد</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,333 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul>
+                    <li>
+                        <a href="{% url 'home_page' %}">خانه</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cart:shopping_cart' %}">سبد خرید</a>
+                    </li>
+                    <li class="active">تکمیل خرید</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="checkout-area ptb-54">
+        <div class="container">
+            {% if cart_items %}
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        {% if not request.user.is_authenticated %}
+                            <div class="alert alert-info mb-4">
+                                <i class="ri-information-line me-2"></i>
+                                <a href="{% url 'login_page' %}" class="alert-link">وارد شوید</a>
+                                یا
+                                <a href="{% url 'register_page' %}" class="alert-link">ثبت‌نام کنید</a>
+                                تا اطلاعات شما ذخیره شود.
+                            </div>
+                        {% endif %}
+
+                        <form method="post" id="checkout-form">
+                            {% csrf_token %}
+
+                            <div class="billing-details">
+                                <h3 class="title">اطلاعات خریدار</h3>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <label>نام <span class="required">*</span></label>
+                                            <input type="text" name="first_name" class="form-control" required
+                                                   value="{{ request.user.first_name|default:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <label>نام خانوادگی <span class="required">*</span></label>
+                                            <input type="text" name="last_name" class="form-control" required
+                                                   value="{{ request.user.last_name|default:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <label>ایمیل <span class="required">*</span></label>
+                                            <input type="email" name="email" class="form-control" required
+                                                   value="{{ request.user.email|default:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <label>تلفن <span class="required">*</span></label>
+                                            <input type="text" name="phone" class="form-control" required
+                                                   placeholder="09xxxxxxxxx">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>کشور</label>
+                                            <div class="select-box">
+                                                <select name="country" class="form-control">
+                                                    <option value="IR" selected>ایران</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>استان <span class="required">*</span></label>
+                                            <input type="text" name="province" class="form-control" required
+                                                   placeholder="مثلاً تهران">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>شهر <span class="required">*</span></label>
+                                            <input type="text" name="city" class="form-control" required
+                                                   placeholder="مثلاً تهران">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>آدرس کامل <span class="required">*</span></label>
+                                            <input type="text" name="address" class="form-control" required
+                                                   placeholder="خیابان، کوچه، پلاک، واحد">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>کد پستی</label>
+                                            <input type="text" name="postal_code" class="form-control"
+                                                   placeholder="xxxxxxxxxx">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>یادداشت سفارش (اختیاری)</label>
+                                            <textarea name="notes" class="form-control" rows="4"
+                                                      placeholder="توضیحات اضافی درباره سفارش"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- روش پرداخت -->
+                            <div class="payment-method mt-4">
+                                <h3>روش پرداخت</h3>
+                                <div class="alert alert-warning">
+                                    <i class="ri-alert-line me-2"></i>
+                                    در حال حاضر فقط <strong>پرداخت آنلاین</strong> فعال می‌باشد.
+                                </div>
+
+                                <div class="faq-accordion">
+                                    <ul class="accordion">
+                                        <li class="accordion-item active">
+                                            <a class="accordion-title" href="javascript:void(0)">
+                                                <i class="ri-bank-card-line me-2"></i>
+                                                پرداخت اینترنتی (آنلاین)
+                                            </a>
+                                            <div class="accordion-content show">
+                                                <p>پرداخت ایمن از طریق درگاه بانکی</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="payment_method"
+                                                           id="online_payment" value="online" checked required>
+                                                    <label class="form-check-label" for="online_payment">
+                                                        پرداخت با کارت‌های عضو شتاب
+                                                    </label>
+                                                </div>
+                                                <div class="payment-icons mt-2">
+                                                    <img src="{% static 'images/payment/saman.png' %}" alt="سامان"
+                                                         height="30" class="me-2">
+                                                    <img src="{% static 'images/payment/mellat.png' %}" alt="ملت"
+                                                         height="30" class="me-2">
+                                                    <img src="{% static 'images/payment/melli.png' %}" alt="ملی"
+                                                         height="30" class="me-2">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="accordion-item">
+                                            <a class="accordion-title" href="javascript:void(0)">
+                                                <i class="ri-wallet-line me-2"></i>
+                                                پرداخت در محل (به زودی)
+                                            </a>
+                                            <div class="accordion-content">
+                                                <p class="text-muted">این روش پرداخت به زودی فعال خواهد شد.</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="payment_method"
+                                                           id="cash_on_delivery" value="cash" disabled>
+                                                    <label class="form-check-label text-muted" for="cash_on_delivery">
+                                                        پرداخت نقدی در محل (غیرفعال)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="form-check mt-4 mb-4">
+                                <input type="checkbox" class="form-check-input" id="agree_terms" required>
+                                <label class="form-check-label" for="agree_terms">
+                                    <i class="ri-checkbox-circle-line me-1"></i>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">قوانین و شرایط</a>
+                                    را مطالعه کرده و می‌پذیرم *
+                                </label>
+                            </div>
+
+                            <div class="place-order">
+                                <button type="submit" class="default-btn two w-100 py-3">
+                                    <i class="ri-bank-card-line me-2"></i>
+                                    انتقال به درگاه پرداخت
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- خلاصه سفارش -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="order-details ml-15">
+                            <div class="cart-totals mb-0">
+                                <h3>خلاصه سفارش</h3>
+
+                                <!-- لیست محصولات -->
+                                <div class="order-products mb-3">
+                                    {% for item in cart_items %}
+                                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                                            {% if item.product.image %}
+                                                <img src="{{ item.product.image.url }}"
+                                                     alt="{{ item.product.title }}"
+                                                     style="width: 60px; height: 60px; object-fit: cover; margin-left: 15px; border-radius: 8px;">
+                                            {% else %}
+                                                <div style="width: 60px; height: 60px; background: #f5f5f5; border-radius: 8px; margin-left: 15px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="ri-box-line text-muted"></i>
+                                                </div>
+                                            {% endif %}
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">{{ item.product.title|truncatechars:30 }}</h6>
+                                                <small class="text-muted">{{ item.quantity }}
+                                                    × {{ item.product.price|floatformat:0 }} تومان</small>
+                                            </div>
+                                            <span class="fw-bold">{{ item.total_price|floatformat:0 }} تومان</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- محاسبات مالی -->
+                                <ul class="order-summary-list">
+                                    <li>
+                                        <span>جمع محصولات:</span>
+                                        <span>{{ cart_total|floatformat:0 }} تومان</span>
+                                    </li>
+                                    <li>
+                                        <span>هزینه ارسال:</span>
+                                        <span>
+                                        {% if cart_total >= 1000000 %}
+                                            <span class="text-success">رایگان</span>
+                                        {% else %}
+                                            ۱۰۰,۰۰۰ تومان
+                                        {% endif %}
+                                    </span>
+                                    </li>
+                                    <li class="border-top pt-2 mt-2">
+                                        <span>مبلغ قابل پرداخت:</span>
+                                        <span class="total-amount fw-bold">
+                                        {% if cart_total >= 1000000 %}
+                                            {{ cart_total|floatformat:0 }}
+                                        {% else %}
+                                            {{ cart_total|add:100000|floatformat:0 }}
+                                        {% endif %}
+                                            <small class="d-block text-muted">تومان</small>
+                                    </span>
+                                    </li>
+                                </ul>
+
+                                <div class="alert alert-info mt-3">
+                                    <div class="d-flex align-items-start">
+                                        <i class="ri-information-line mt-1 me-2"></i>
+                                        <div>
+                                            <strong>نکات مهم:</strong>
+                                            <ul class="mb-0 mt-1 ps-3">
+                                                <li>حداقل خرید: ۵۰۰,۰۰۰ تومان</li>
+                                                <li>ارسال رایگان: سفارشات بالای ۱,۰۰۰,۰۰۰ تومان</li>
+                                                <li>هزینه پیک: ۱۰۰,۰۰۰ تومان</li>
+                                                <li>زمان تحویل: ۲۴-۷۲ ساعت کاری</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <!-- اگر سبد خرید خالی بود -->
+                <div class="text-center py-5">
+                    <div class="empty-cart-icon mb-3">
+                        <i class="ri-shopping-cart-line display-4 text-muted"></i>
+                    </div>
+                    <h3 class="text-muted mb-3">سبد خرید شما خالی است</h3>
+                    <p class="text-muted mb-4">لطفاً ابتدا محصولاتی به سبد خرید خود اضافه کنید.</p>
+                    <a href="{% url 'product:product-list' %}" class="default-btn px-4">
+                        <i class="ri-shopping-bag-line me-2"></i>
+                        مشاهده محصولات
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- مودال قوانین و شرایط -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="ri-file-text-line me-2"></i>
+                        قوانین و شرایط استفاده
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="terms-content">
+                        <h6>شرایط عمومی:</h6>
+                        <ul>
+                            <li>حداقل مبلغ خرید ۵۰۰,۰۰۰ تومان می‌باشد.</li>
+                            <li>ارسال رایگان برای سفارشات بالای ۱,۰۰۰,۰۰۰ تومان.</li>
+                            <li>هزینه پیک برای سفارشات زیر ۱ میلیون تومان: ۱۰۰,۰۰۰ تومان.</li>
+                            <li>مهلت بازگشت کالا ۷ روز کاری از تاریخ تحویل می‌باشد.</li>
+                            <li>کالای مرجوعی باید در بسته‌بندی اصلی و سالم باشد.</li>
+                        </ul>
+
+                        <h6 class="mt-4">روش‌های پرداخت:</h6>
+                        <ul>
+                            <li>پرداخت اینترنتی (آنلاین) از طریق درگاه بانکی</li>
+                            <li>پذیرش کلیه کارت‌های عضو شتاب</li>
+                            <li>پرداخت در محل در حال حاضر غیرفعال می‌باشد</li>
+                        </ul>
+
+                        <h6 class="mt-4">زمان و شرایط تحویل:</h6>
+                        <ul>
+                            <li>تهران: ۲۴ تا ۴۸ ساعت کاری</li>
+                            <li>شهرستان‌ها: ۳ تا ۵ روز کاری</li>
+                            <li>تحویل در روزهای شنبه تا چهارشنبه</li>
+                            <li>ساعات تحویل: ۹ صبح تا ۶ عصر</li>
+                        </ul>
+
+                        <h6 class="mt-4">ضمانت و گارانتی:</h6>
+                        <ul>
+                            <li>کلیه محصولات دارای گارانتی اصالت کالا می‌باشند.</li>
+                            <li>گارانتی تعمیرات ۶ ماهه برای کلیه محصولات</li>
+                            <li>پشتیبانی فنی ۲۴ ساعته</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">تایید و بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

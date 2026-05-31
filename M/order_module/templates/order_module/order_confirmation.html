@@ -1,0 +1,153 @@
+{% extends 'shared/_layout.html' %}
+
+{% block title %}تأیید سفارش | {{ order.id }}{% endblock %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="text-center mb-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h1 class="h2 mb-3">سفارش شما با موفقیت ثبت شد!</h1>
+                    <p class="text-muted">سفارش شما ثبت شده و در حال پردازش است. جزئیات سفارش در زیر آمده است.</p>
+                </div>
+
+                <!-- کارت اطلاعات سفارش -->
+                <div class="card border-0 shadow-lg mb-5">
+                    <div class="card-header bg-primary text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">مشخصات سفارش</h5>
+                            <span class="badge bg-light text-dark fs-6">شماره سفارش: #{{ order.id }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- اطلاعات وضعیت -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted">تاریخ سفارش:</h6>
+                                <p class="fw-bold">{{ order.created_at|date:"Y/m/d - H:i" }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted">وضعیت سفارش:</h6>
+                                <span class="badge {% if order.status == 'pending' %}bg-warning{% elif order.status == 'processing' %}bg-info{% elif order.status == 'completed' %}bg-success{% else %}bg-secondary{% endif %} p-2">
+                                {{ order.get_status_display }}
+                            </span>
+                            </div>
+                        </div>
+
+                        <!-- اطلاعات قیمت -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted">مبلغ کل:</h6>
+                                <p class="fw-bold fs-4 text-success">{{ order.total|floatformat:0 }} تومان</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted">روش پرداخت:</h6>
+                                <p class="fw-bold">پرداخت آنلاین</p>
+                            </div>
+                        </div>
+
+                        <!-- جدول محصولات -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">محصولات سفارش</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>محصول</th>
+                                        <th class="text-center">تعداد</th>
+                                        <th class="text-end">قیمت واحد</th>
+                                        <th class="text-end">جمع</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in order.items.all %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    {% if item.product.image %}
+                                                        <img src="{{ item.product.image.url }}"
+                                                             alt="{{ item.product.title }}" class="img-thumbnail"
+                                                             style="width: 60px; height: 60px; object-fit: cover;">
+                                                    {% endif %}
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-1">{{ item.product.title }}</h6>
+                                                        <small class="text-muted">کد
+                                                            محصول: {{ item.product.id }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center align-middle">{{ item.quantity }}</td>
+                                            <td class="text-end align-middle">{{ item.price|floatformat:0 }} تومان</td>
+                                            <td class="text-end align-middle fw-bold">{{ item.total_price|floatformat:0 }}
+                                                تومان
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot class="table-light">
+                                    <tr>
+                                        <td colspan="3" class="text-end fw-bold">جمع کل:</td>
+                                        <td class="text-end fw-bold fs-5">{{ order.total|floatformat:0 }} تومان</td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- اطلاعات کاربر -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted">تحویل گیرنده:</h6>
+                                <p class="fw-bold">{{ order.user.get_full_name|default:order.user.username }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted">ایمیل:</h6>
+                                <p class="fw-bold">{{ order.user.email }}</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <div class="d-flex">
+                                <i class="fas fa-info-circle me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="alert-heading">نکات مهم:</h6>
+                                    <ul class="mb-0 ps-3">
+                                        <li>جزئیات سفارش به ایمیل شما ارسال شد</li>
+                                        <li>می‌توانید وضعیت سفارش خود را از بخش "پیگیری سفارش" دنبال کنید</li>
+                                        <li>برای هرگونه سؤال با پشتیبانی تماس بگیرید</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- دکمه‌های اقدام -->
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'cart:shopping_cart' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-shopping-cart me-2"></i>ادامه خرید
+                    </a>
+                    <div>
+                        <a href="{% url 'orders:order_tracking' %}" class="btn btn-primary me-2">
+                            <i class="fas fa-truck me-2"></i>پیگیری سفارش
+                        </a>
+                        <a href="{% url 'orders:order_history' %}" class="btn btn-success">
+                            <i class="fas fa-history me-2"></i>تاریخچه سفارشات
+                        </a>
+                    </div>
+                </div>
+                <div class="text-center mt-5 pt-4 border-top">
+                    <small class="text-muted">
+                        <i class="fas fa-phone me-1"></i>
+                        پشتیبانی: ۰۲۱-۱۲۳۴۵۶۷۸ |
+                        <i class="fas fa-envelope ms-3 me-1"></i>
+                        support@example.com
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

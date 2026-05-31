@@ -1,0 +1,39 @@
+{% extends 'shared/_layout.html' %}
+{% block content %}
+    <div class="container py-4">
+        <h2 class="mb-4">محصولات {% if current_category %} - {{ current_category.title }}{% endif %}</h2>
+
+        {% if products %}
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <a href="{{ product.get_absolute_url }}">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="card-img-top"
+                                         style="height:200px; object-fit:cover;" alt="{{ product.title }}">
+                                {% else %}
+                                    <img src="/static/images/default-product.png" class="card-img-top"
+                                         style="height:200px; object-fit:cover;" alt="{{ product.title }}">
+                                {% endif %}
+                            </a>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                </h5>
+                                <p class="card-text">
+                                    {% if product.old_price %}
+                                        <span class="text-muted text-decoration-line-through">{{ product.old_price }} تومان</span>
+                                    {% endif %}
+                                    <span class="fw-bold">{{ product.price }} تومان</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">هیچ محصولی برای این دسته بندی موجود نیست.</p>
+        {% endif %}
+    </div>
+{% endblock %}

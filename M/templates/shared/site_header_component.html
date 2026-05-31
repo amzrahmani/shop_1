@@ -1,0 +1,303 @@
+{% load static %}
+
+<div class="preloader">
+    <div class="content">
+        <div class="box"></div>
+    </div>
+</div>
+<header class="header-area">
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <ul class="header-left-content">
+                        <li><a href="{% url 'about_us' %}">درباره</a></li>
+                        <li><a href="#">مکان فروشگاه</a></li>
+                        <li><a href="{% url 'orders:order_tracking' %}">رهگیری سفارش</a></li>
+                        <li>کمک خواستن؟ تماس: <a href="#"><span>choobin18@yahoo.com</span></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <div class="header-right-content">
+                        <ul>
+                            {% if request.user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'dashboard_page' %}">{{ request.user.get_full_name|default:request.user.email }}</a>
+                                </li>
+                                <li><a href="{% url 'logout_page' %}">خروج</a></li>
+                            {% else %}
+                                <li><a href="{% url 'login_page' %}">ورود</a></li>
+                                <li><a href="{% url 'register_page' %}">ثبت نام</a></li>
+                            {% endif %}
+                            <li>
+                                <div class="usd">
+                                    <select>
+                                        <option value="1">ریال</option>
+                                        <option value="2">تومان</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="navbar-option-item navbar-option-language dropdown language-option">
+                                    <button class="dropdown-toggle" type="button" id="language2"
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="lang-name">فارسی</span>
+                                    </button>
+                                    <div class="dropdown-menu language-dropdown-menu" aria-labelledby="language2">
+                                        <a class="dropdown-item" href="#"><img
+                                                src="{% static 'images/language/iran.png' %}" alt="Image"> فارسی</a>
+                                        <a class="dropdown-item" href="#"><img
+                                                src="{% static 'images/language/deutsch.png' %}" alt="Image">
+                                            Deutsch</a>
+                                        <a class="dropdown-item" href="#"><img
+                                                src="{% static 'images/language/china.png' %}" alt="Image"> 简体中文</a>
+                                        <a class="dropdown-item" href="#"><img
+                                                src="{% static 'images/language/arbic.png' %}" alt="Image"> العربيّة</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Middle Header -->
+    <div class="middle-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="logo">
+                        <a href="{% url 'home_page' %}">
+                            <img src="{% static 'images/logo.png' %}" alt="Image">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <form class="search-box" action="{% url 'product:product_search' %}" method="get">
+                        <input type="text" name="q" placeholder="محصولات را جستجو کنید..." class="form-control">
+                        <button type="submit" class="search-btn">
+                            <i class="ri-search-line"></i> جستجو
+                        </button>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <ul class="wish-cart">
+                        <li>
+                            <a href="{% url 'wishlist_page:wishlist' %}" class="d-flex align-items-center">
+            <span class="wish-icon position-relative">
+                <i class="ri-heart-line"></i>
+                {% if wishlist_count > 0 %}
+                    <span class="count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 10px; padding: 2px 5px;">
+                    {{ wishlist_count }}
+                </span>
+                {% endif %}
+            </span>
+                                <span class="ms-2">علاقه‌مندی من</span>
+                            </a>
+                        </li>
+                        <li>
+        <span class="cart d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal-cart">
+            <span class="wish-icon position-relative">
+                <i class="ri-shopping-cart-line"></i>
+                {% if cart_count > 0 %}
+                    <span class="count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 10px; padding: 2px 5px;">
+                    {{ cart_count }}
+                </span>
+                {% endif %}
+            </span>
+            <span class="ms-2">
+                <small class="d-block" style="font-size: 12px; line-height: 1;">سبد خرید:</small>
+                <strong>{{ cart_total|default:"0" }} تومان</strong>
+            </span>
+        </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Desktop & Mobile -->
+    <div class="navbar-area only-home-one-sticky">
+        <!-- Mobile -->
+        <div class="mobile-responsive-nav">
+            <div class="container">
+                <div class="mobile-responsive-menu">
+                    <div class="navbar-category">
+                        <button type="button" id="categoryButton-1" data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                            <i class="ri-menu-line"></i>
+                        </button>
+                        <div class="navbar-category-dropdown dropdown-menu" aria-labelledby="categoryButton-1">
+                            <ul>
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product:category-products' pk=category.id %}">{{ category.title }}</a>
+                                    </li>
+                                {% empty %}
+                                    <li>دسته‌ای موجود نیست</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="logo">
+                        <a href="{% url 'home_page' %}"><img src="{% static 'images/logo.png' %}" alt="logo"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop -->
+        <div class="desktop-nav">
+            <div class="container">
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <div class="navbar-category">
+                        <button type="button">
+                            <i class="ri-menu-line"></i> همه دسته بندی ها
+                            <i class="arrow-down ri-arrow-down-s-line"></i>
+                        </button>
+                        <div class="navbar-category-dropdown">
+                            <ul>
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product:category-products' pk=category.id %}">{{ category.title }}</a>
+                                    </li>
+                                {% empty %}
+                                    <li>دسته‌ای موجود نیست</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="collapse navbar-collapse mean-menu">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a href="{% url 'home_page' %}" class="nav-link active">خانه</a></li>
+                            <li class="nav-item mega-menu">
+                                <a href="#" class="nav-link">فروشگاه <i class="ri-arrow-down-s-line"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class="sub-menu-title">محصولات</h6>
+                                                <ul class="sub-menu">
+                                                    <li><a href="{% url 'product:product-list' %}">لیست محصولات</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class="sub-menu-title">صفحات</h6>
+                                                <ul class="sub-menu">
+                                                    <li><a href="{% url 'product:product-list' %}">لیست محصولات</a></li>
+                                                    <li><a href="{% url 'orders:order_tracking' %}">پیگیری سفارش</a></li>
+                                                    <li><a href="{% url 'cart:shopping_cart' %}">سبد خرید</a></li>
+                                                    <li><a href="{% url 'dashboard_page' %}">حساب کاربری</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="{% url 'about_us' %}" class="nav-link">درباره ما</a></li>
+                            <li class="nav-item"><a href="{% url 'blog:blog-list' %}" class="nav-link">وبلاگ</a></li>
+                            <li class="nav-item"><a href="{% url 'contact_us' %}" class="nav-link">تماس با ما</a></li>
+                        </ul>
+                        <div class="others-options ms-auto">
+                            <span>ارسال رایگان سفارشات بالای ۱ میلیون تومان</span>
+                        </div>
+                        <div class="cart-btn ms-3">
+                            <button type="button" class="default-btn" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal-cart">
+                                <i class="ri-shopping-cart-line"></i> سبد خرید
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="modal fade cart-shit" id="exampleModal-cart" tabindex="-1" aria-hidden="true">
+    <div class="cart-shit-wrap">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">سبد خرید شما</h5>
+                    <button type="button" class="close-btn" data-bs-dismiss="modal">
+                        <i class="ri-close-fill"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="cart-list">
+                        {% for item in cart_items %}
+                            <li class="d-flex align-items-center justify-content-between p-2 border-bottom">
+                                <div class="d-flex align-items-center">
+                                    {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}"
+                                             alt="{{ item.product.title }}"
+                                             style="width: 60px; height: 60px; object-fit: cover;"
+                                             class="me-3 rounded">
+                                    {% else %}
+                                        <img src="{% static 'images/default-product.png' %}"
+                                             alt="محصول"
+                                             style="width: 60px; height: 60px; object-fit: cover;"
+                                             class="me-3 rounded">
+                                    {% endif %}
+                                    <div>
+                                        <a href="{{ item.product.get_absolute_url }}"
+                                           class="d-block text-truncate"
+                                           style="max-width: 200px;">
+                                            {{ item.product.title }}
+                                        </a>
+                                        <small class="text-muted">{{ item.quantity }} × {{ item.product.price }}
+                                            تومان</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-3 fw-bold">{{ item.total_price }} تومان</span>
+                                    <a href="{% url 'cart:remove-from-cart' item.id %}"
+                                       class="text-danger"
+                                       style="text-decoration: none;">
+                                        <i class="ri-close-fill"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        {% empty %}
+                            <li class="text-center p-4">
+                                <i class="ri-shopping-cart-line fs-1 text-muted mb-3 d-block"></i>
+                                <p class="text-muted">سبد خرید شما خالی است</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if cart_items %}
+                        <ul class="payable d-flex justify-content-between align-items-center p-3 bg-light rounded mt-3">
+                            <li class="fw-bold">مجموع قابل پرداخت</li>
+                            <li class="total">
+                                <span class="fw-bold fs-5">{{ cart_total }} تومان</span>
+                            </li>
+                        </ul>
+                        <ul class="cart-check-btn d-flex gap-2 mt-3">
+                            <li class="flex-fill">
+                                <a href="{% url 'cart:shopping_cart' %}" class="default-btn d-block text-center py-2">
+                                    مشاهده سبد خرید
+                                </a>
+                            </li>
+                            <li class="flex-fill">
+                                <a href="{% url 'product:product-list' %}" class="default-btn d-block text-center py-2">
+                                    ادامه خرید
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

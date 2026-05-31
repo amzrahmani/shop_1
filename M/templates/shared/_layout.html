@@ -1,0 +1,23 @@
+{% load static %}
+{% load render_partial %}
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="HTML5,CSS3,HTML,Template,multi-page,Ehay - Tools Store eCommerce HTML Template">
+    <meta name="description" content="Ehay - Tools Store eCommerce HTML Template">
+    <meta name="author" content="Barat Hadian">
+    {% include 'shared/header_reference.html' %}
+    <title>فروشگاه آنلاین </title>
+</head>
+<body>
+{% include 'shared/site_header_component.html' %}
+
+{% block content %}{% endblock %}
+
+{% include 'shared/site_footer_component.html' %}
+{% include 'shared/footer_reference.html' %}
+</body>
+</html>

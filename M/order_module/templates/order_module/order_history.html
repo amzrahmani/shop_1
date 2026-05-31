@@ -1,0 +1,86 @@
+{% extends 'shared/_layout.html' %}
+{% block content %}
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            خانه
+                        </a>
+                    </li>
+                    <li class="active">تاریخچه سفارشات</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% extends 'shared/_layout.html' %}
+    {% block content %}
+        <section class="dashboard-area ptb-54">
+            <div class="container">
+                <div class="row">
+                    <!-- نوار کناری داشبورد -->
+                    <div class="col-lg-4">
+                        <ul class="dashboard-navigation">
+                            <li><h3>پنل کاربری</h3></li>
+                            <li><a href="{% url 'dashboard' %}">داشبورد کاربری</a></li>
+                            <li><a href="{% url 'edit_profile' %}">ویرایش پروفایل</a></li>
+                            <li><a href="{% url 'edit_address' %}">ویرایش آدرس</a></li>
+                            <li><a href="{% url 'order-history' %}" class="active">تاریخچه سفارشات</a></li>
+                            <li><a href="{% url 'order-details' order_id=0 %}">جزئیات سفارشات</a></li>
+                            <li><a href="{% url 'address' %}">آدرس</a></li>
+                            <li><a href="{% url 'change_password' %}">گذرواژه</a></li>
+                            <li><a href="{% url 'logout' %}">خروج</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- بخش اصلی تاریخچه سفارش -->
+                    <div class="col-lg-8">
+                        <div class="cart-area recent-order">
+                            <h3>تاریخچه سفارشات</h3>
+                            {% if orders %}
+                                <div class="cart-table table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>محصول</th>
+                                            <th>سفارش</th>
+                                            <th>تعداد</th>
+                                            <th>وضعیت</th>
+                                            <th>مجموع</th>
+                                            <th>جزئیات</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order in orders %}
+                                            {% for item in order.items.all %}
+                                                <tr>
+                                                    <td class="product-name">{{ item.product.title }}</td>
+                                                    <td>#{{ order.id }}</td>
+                                                    <td>{{ item.quantity }}</td>
+                                                    <td>{{ order.get_status_display }}</td>
+                                                    <td>{{ item.total_price }} تومان</td>
+                                                    <td>
+                                                        <a href="{% url 'order-details' order.id %}"
+                                                           class="btn btn-sm btn-primary">
+                                                            مشاهده
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            {% else %}
+                                <p>شما هنوز سفارشی ثبت نکرده‌اید.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endblock %}
+
+{% endblock %}

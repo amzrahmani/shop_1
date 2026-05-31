@@ -1,0 +1,90 @@
+<section class="best-seller-area pb-30">
+    <div class="container">
+        <div class="section-title">
+            <h2>محصولات مرتبط</h2>
+        </div>
+
+        <div class="best-product-slider owl-carousel owl-theme owl-rtl">
+            {% for product in products %}
+                <div class="single-products">
+                    <!-- تصویر محصول -->
+                    <div class="product-img">
+                        <a href="{{ product.get_absolute_url }}">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}"
+                                     alt="{{ product.title }}"
+                                     class="img-fluid w-100 product-img-fixed"
+                                     style="height: 250px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/default-product.png' %}"
+                                     alt="محصول پیش‌فرض"
+                                     class="img-fluid w-100 product-img-fixed"
+                                     style="height: 250px; object-fit: cover;">
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    <!-- محتوا -->
+                    <div class="product-content">
+                        <a href="{{ product.get_absolute_url }}" class="title">
+                            {{ product.title }}
+                        </a>
+
+                        <!-- امتیاز -->
+                        <ul class="products-rating">
+                            {% for i in "12345" %}
+                                <li><i class="ri-star-fill"></i></li>
+                            {% endfor %}
+                            <li><span>(بدون نظر)</span></li>
+                        </ul>
+
+                        <!-- قیمت -->
+                        <ul class="products-price">
+                            <li>
+                                {{ product.price }} تومان
+                                {% if product.old_price %}
+                                    <del>{{ product.old_price }} تومان</del>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if product.is_active %}
+                                    <span>در انبار</span>
+                                {% else %}
+                                    <span class="text-danger">ناموجود</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+
+                        <!-- دکمه‌ها -->
+                        <ul class="products-cart-wish-view">
+                            <!-- افزودن به سبد -->
+                            <li>
+                                <a href="{% url 'cart:add-to-cart' product.id %}" class="default-btn">
+                                    <i class="ri-shopping-cart-line"></i>
+                                    افزودن خرید
+                                </a>
+                            </li>
+
+                            <!-- علاقه‌مندی -->
+                            <li>
+                                <a href="{% url 'wishlist_page:add' product.id %}" class="wish-btn">
+                                    <i class="ri-heart-line"></i>
+                                </a>
+                            </li>
+
+                            <!-- مشاهده -->
+                            <li>
+                                <a href="{{ product.get_absolute_url }}" class="eye-btn">
+                                    <i class="ri-eye-line"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center">محصول مرتبطی وجود ندارد.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+

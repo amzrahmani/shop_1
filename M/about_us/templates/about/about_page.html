@@ -1,0 +1,140 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul class="mb-0">
+                    <li>
+                        <a href="{% url 'home_page' %}">خانه</a>
+                    </li>
+                    <li class="active">درباره ما</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-area ptb-54">
+        <div class="container">
+            <!-- بخش اول: معرفی -->
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="about-content">
+                        <h2 class="mb-4">ما کیستیم؟</h2>
+                        <p class="lead mb-3">
+                            فروش، تعمیرات، اجرا و نصب انواع پرژکتور ریلی، چراغ فنی، چراغ استخری، چراغ ال‌ای‌دی
+                        </p>
+                        <p class="text-justify">
+                            این روزها اکثر فروشگاه‌های بزرگ، گالری‌ها و موزه‌ها برای تامین روشنایی مورد نیاز خود از
+                            پروژکتورهای ریلی استفاده می‌کنند. این نوع پروژکتورها در انواع مختلفی تولید می‌شوند که هر
+                            کدام ویژگی‌های مخصوص خود را دارند.
+                        </p>
+                        <p class="text-justify">
+                            در این پروژکتورها از لامپ‌های مختلفی مثل SMD و LED استفاده می‌شود که هرکدام قابلیت‌های
+                            ویژه‌ای دارند. شما باید در هنگام خرید دقت کافی را داشته باشید و با توجه به نیازی که دارید
+                            آنها را انتخاب کنید.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-img text-center">
+                        <img src="{% static 'images/IMG-20260107-WA0068.jpg' %}"
+                             alt="درباره ما"
+                             class="img-fluid rounded shadow"
+                             style="max-height: 400px; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- بخش دوم: خدمات -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="about-content">
+                        <h3 class="mb-4 text-center">خدمات ما</h3>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="service-card p-4 border rounded shadow-sm h-100">
+                                    <h4 class="mb-3 text-primary">چراغ‌های استخری</h4>
+                                    <p class="text-justify">
+                                        این نوع چراغ‌ها به‌گونه‌ای طراحی شده‌اند که در یک قاب ضد آب هستند. به دو صورت
+                                        روکار و توکار نصب می‌شوند و برای نورپردازی درون استخرها و حوضچه‌ها استفاده
+                                        می‌شوند.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="service-card p-4 border rounded shadow-sm h-100">
+                                    <h4 class="mb-3 text-primary">چراغ‌های دفنی</h4>
+                                    <p class="text-justify">
+                                        این چراغ‌ها را می‌توان در داخل زمین، داخل نما، دور درختان و دور ستون‌های ساختمان
+                                        استفاده کرد. نور آنها از پایین به بالا می‌باشد و ضد آب هستند.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بخش سوم: تعمیرات -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="about-content bg-light p-4 rounded">
+                        <h3 class="mb-4">تعمیرات تخصصی وتعمیرات چراغ‌های ال‌ای‌دی (LED)</h3>
+                        <br>
+                        <p class="text-justify">
+                            مجموعه ما با چندین سال تجربه در زمینه فروش چراغ‌های ال‌ای‌دی، چراغ‌های دفنی، چراغ‌های استخری
+                            و پروژکتورهای ریلی، خدمات تعمیرات انواع چراغ‌های ال‌ای‌دی را نیز انجام می‌دهد.
+                        </p>
+                        <p class="text-justify">
+                            لامپ‌های ال‌ای‌دی یکی از ویژگی‌های خوبی که دارند این است که قابل تعمیر هستند. در صورتی که
+                            آنها خراب شوند، شما می‌توانید آنها را به متخصصان تعمیر در این زمینه بسپارید.
+                        </p>
+                        <p class="text-justify">
+                            این روزها بیشترین مصرف را در بین لامپ‌ها، لامپ‌های ال‌ای‌دی دارند و به دلیل گران بودن
+                            هزینه‌های روشنایی، اکثر مردم ترجیح می‌دهند که آنها را تعمیر کنند.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بخش چهارم: همکاران -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="about-content">
+                        <h3 class="mb-4 text-center">همکاران و شرکای ما</h3>
+                        <div class="partner-wrap">
+                            <div class="partner-slider owl-carousel owl-theme">
+                                {% for i in "123456" %}
+                                    <div class="partner-item text-center">
+                                        <img src="{% static 'images/partners/partner-'|add:i|add:'.png' %}"
+                                             alt="همکار {{ i }}"
+                                             class="img-fluid"
+                                             style="max-height: 80px; width: auto;">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بخش پنجم: تماس -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="about-content text-center bg-primary text-white p-5 rounded">
+                        <h3 class="mb-3">آماده ارائه خدمات به شما</h3>
+                        <p class="mb-4 lead">
+                            مجموعه ما با بهترین و مجرب‌ترین متخصصان در زمینه تعمیرات چراغ‌های ال‌ای‌دی، پروژکتورهای
+                            ریلی، چراغ‌های استخری و دفنی آماده ارائه کلیه خدمات برقی می‌باشد.
+                        </p>
+                        <a href="{% url 'contact_us' %}" class="btn btn-light btn-lg">
+                            تماس با ما
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

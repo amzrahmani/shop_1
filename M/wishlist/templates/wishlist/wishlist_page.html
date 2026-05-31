@@ -1,0 +1,106 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Page Title -->
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul>
+                    <li>
+                        <a href="{% url 'home_page' %}">
+                            خانه
+                        </a>
+                    </li>
+                    <li class="active">لیست علاقه‌مندی‌ها</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Area -->
+    <div class="cart-area ptb-54">
+        <div class="container">
+
+            {% if wishlist_items %}
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered">
+
+                        <thead>
+                        <tr>
+                            <th scope="col">محصول</th>
+                            <th scope="col">نام</th>
+                            <th scope="col">قیمت</th>
+                            <th scope="col">خرید</th>
+                            <th scope="col">حذف</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for item in wishlist_items %}
+                            <tr>
+
+                                <!-- تصویر محصول -->
+                                <td class="product-thumbnail">
+                                    <a href="{{ item.product.get_absolute_url }}">
+                                        <img src="{{ item.product.image.url }}"
+                                             alt="{{ item.product.title }}"
+                                             style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
+                                    </a>
+                                </td>
+
+                                <!-- نام محصول -->
+                                <td class="product-name">
+                                    <a href="{{ item.product.get_absolute_url }}">
+                                        {{ item.product.title }}
+                                    </a>
+                                </td>
+
+                                <!-- قیمت -->
+                                <td class="product-price">
+                                    <span class="unit-amount">
+                                        {{ item.product.price|floatformat:0 }} تومان
+                                    </span>
+                                </td>
+
+                                <!-- دکمه خرید -->
+                                <td>
+                                    <a href="{% url 'add-to-cart' item.product.id %}"
+                                       class="default-btn">
+                                        افزودن به سبد
+                                    </a>
+                                </td>
+
+                                <!-- حذف -->
+                                <td class="trash">
+                                    <a href="{% url 'wishlist_page:remove' item.id %}"
+                                       class="remove"
+                                       style="color:red;font-size:20px;">
+                                        <i class="ri-close-fill"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            {% else %}
+
+                <!-- اگر لیست خالی بود -->
+                <div class="text-center p-5">
+                    <h4>لیست علاقه‌مندی‌های شما خالی است ❤️</h4>
+                    <a href="{% url 'product:product-list' %}" class="default-btn mt-3">
+                        مشاهده محصولات
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'shared/_layout.html' %}
+{% block content %}
+
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul>
+                    <li>
+                        <a href="{% url 'home_page' %}">
+                            خانه
+                        </a>
+                    </li>
+                    <li class="active">سبد خرید</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="cart-area ptb-54">
+        <div class="container">
+            <div class="row">
+
+                ```
+                <!-- جدول سبد -->
+                <div class="col-lg-9">
+
+                    {% if cart_items.exists %}
+
+                        <div class="cart-table table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>محصول</th>
+                                    <th></th>
+                                    <th>قیمت</th>
+                                    <th>تعداد</th>
+                                    <th>مجموع</th>
+                                    <th>حذف</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for item in cart_items %}
+                                    <tr>
+
+                                        <!-- تصویر -->
+                                        <td class="product-thumbnail">
+                                            <a href="{{ item.product.get_absolute_url }}">
+                                                <img src="{{ item.product.image.url }}" alt="">
+                                            </a>
+                                        </td>
+
+                                        <!-- نام -->
+                                        <td class="product-name">
+                                            <a href="{{ item.product.get_absolute_url }}">
+                                                {{ item.product.title }}
+                                            </a>
+                                        </td>
+
+                                        <!-- قیمت واحد -->
+                                        <td class="product-price">
+                                            <span>{{ item.product.price }} تومان</span>
+                                        </td>
+
+                                        <!-- تعداد -->
+                                        <td class="product-quantity">
+                                            {{ item.quantity }}
+                                        </td>
+
+                                        <!-- قیمت کل آیتم -->
+                                        <td class="product-subtotal">
+                                            <span>{{ item.total_price }} تومان</span>
+                                        </td>
+
+                                        <!-- حذف -->
+                                        <td class="trash">
+                                            <a href="{% url 'cart:remove-from-cart' item.id %}" class="remove">
+                                                <i class="ri-close-fill"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    {% else %}
+                        <div class="alert alert-warning text-center mt-4">
+                            <h5>سبد خرید شما خالی است 😅</h5>
+                            <a href="{% url 'home_page' %}" class="default-btn mt-3">
+                                رفتن به فروشگاه
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <!-- ستون جمع کل -->
+                <div class="col-lg-3">
+                    <div class="cart-totals">
+                        <h3>مجموع خرید</h3>
+
+                        {% if cart_items.exists %}
+                            <ul>
+                                <li>
+                                    تعداد کالا
+                                    <span>{{ cart_count }}</span>
+                                </li>
+
+                                <li>
+                                    جمع کل
+                                    <span>{{ cart_total }} تومان</span>
+                                </li>
+                            </ul>
+
+                            <a href="{% url 'orders:checkout' %}" class="default-btn w-100">
+                                ادامه فرآیند پرداخت
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        ```
+
+    </section>
+
+{% endblock %}

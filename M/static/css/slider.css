@@ -1,0 +1,45 @@
+
+.hero-slider-area .hero-slider-content h1,
+.hero-slider-area .hero-slider-content span,
+.hero-slider-area .hero-slider-content p {
+    color: #ffffff !important;
+}
+
+
+.hero-slider-area .default-btn {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+.slider-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1;
+}
+
+.hero-slider-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-slider-area .hero-slider-content,
+.hero-slider-area .hero-slider-content * {
+    color: #ffffff !important;
+}
+
+
+.hero-slider-area .default-btn {
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+
+}
+
+.hero-slider-area .hero-slider-content,
+.hero-slider-area .hero-slider-content * {
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+

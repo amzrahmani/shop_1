@@ -1,0 +1,60 @@
+{% extends 'shared/_layout.html' %}
+{% block content %}
+    <section class="our-blog-area pb-30">
+        <div class="container">
+            <div class="section-title d-flex justify-content-between align-items-center mb-4">
+                <h2>وبلاگ</h2>
+                <a href="{% url 'blog:blog-list' %}" class="read-more">
+                    مشاهده همه
+                </a>
+            </div>
+
+            <div class="row justify-content-center">
+
+                {% for blog in blogs %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="single-blog shadow-sm rounded overflow-hidden">
+
+                            <a href="{{ blog.get_absolute_url }}" class="d-block">
+                                {% if blog.image %}
+                                    <img src="{{ blog.image.url }}"
+                                         alt="{{ blog.title }}"
+                                         class="img-fluid w-100"
+                                         style="height: 220px; object-fit: cover;">
+                                {% else %}
+                                    <div style="height:220px; background:#eee;"
+                                         class="d-flex align-items-center justify-content-center">
+                                        <span>بدون تصویر</span>
+                                    </div>
+                                {% endif %}
+                            </a>
+
+                            <div class="blog-content p-3">
+                                <ul class="d-flex justify-content-between text-muted small mb-2">
+                                    <li>{{ blog.author }}</li>
+                                    <li>{{ blog.created_at|date:"d M Y" }}</li>
+                                </ul>
+
+                                <h3 class="mb-3" style="font-size: 18px; line-height: 1.6;">
+                                    <a href="{{ blog.get_absolute_url }}" class="text-dark">
+                                        {{ blog.title }}
+                                    </a>
+                                </h3>
+
+                                <a href="{{ blog.get_absolute_url }}" class="default-btn mt-2 d-inline-block">
+                                    ادامه خواندن
+                                    <i class="ri-arrow-left-line"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center">مقاله‌ای وجود ندارد</p>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

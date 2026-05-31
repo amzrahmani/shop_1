@@ -1,0 +1,98 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul>
+                    <li><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="active">محصولات{% if current_category %} - {{ current_category.title }}{% endif %}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="products-area ptb-54">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="widget-sidebar mr-15">
+                        <!-- دسته بندی -->
+                        <div class="sidebar-widget categories">
+                            <h3>دسته بندی محصولات</h3>
+                            <ul>
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'product:category-products' category.id %}">
+                                            {{ category.title }}
+                                        </a>
+                                    </li>
+                                {% empty %}
+                                    <li>دسته‌ای موجود نیست</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- فیلتر قیمت -->
+                        <div class="sidebar-widget filter">
+                            <h3>فیلتر بر اساس قیمت</h3>
+                            <form method="get" id="price-filter-form">
+                                <div id="range-slider"></div>
+                                <div class="price-range-filter">
+                                    <input type="text" id="price-amount" readonly>
+                                </div>
+                                <input type="hidden" name="min_price" id="min_price"
+                                       value="{{ request.GET.min_price }}">
+                                <input type="hidden" name="max_price" id="max_price"
+                                       value="{{ request.GET.max_price }}">
+                                <button type="submit" class="default-btn mt-2">اعمال فیلتر</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products -->
+                <div class="col-lg-8">
+                    <div class="row justify-content-center">
+                        {% if products %}
+                            {% for product in products %}
+                                {% include 'inc/product_item_partial.html' with product=product %}
+                            {% endfor %}
+                        {% else %}
+                            <p>هیچ محصولی یافت نشد.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if is_paginated %}
+                        <div class="pagination-area mt-4 text-center">
+                            {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}" class="page-numbers">
+                                    <i class="ri-arrow-right-line"></i>
+                                </a>
+                            {% endif %}
+
+                            {% for page in paginator.page_range %}
+                                {% if page == page_obj.number %}
+                                    <span class="page-numbers current">{{ page }}</span>
+                                {% else %}
+                                    <a href="?page={{ page }}" class="page-numbers">{{ page }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="page-numbers">
+                                    <i class="ri-arrow-left-line"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+

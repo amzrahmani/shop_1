@@ -1,0 +1,81 @@
+{% extends 'shared/_layout.html' %}
+{% block content %}
+    <div class="page-title-area">
+        <div class="container">
+            <div class="page-title-content">
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            خانه
+                        </a>
+                    </li>
+                    <li class="active">جزئیات سفارش</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <section class="dashboard-area ptb-54">
+        <div class="container">
+            <div class="row">
+                <!-- نوار کناری داشبورد -->
+                <div class="col-lg-4">
+                    <ul class="dashboard-navigation">
+                        <li><h3>پنل کاربری</h3></li>
+                        <li><a href="{% url 'dashboard' %}">داشبورد کاربری</a></li>
+                        <li><a href="{% url 'edit_profile' %}">ویرایش پروفایل</a></li>
+                        <li><a href="{% url 'edit_address' %}">ویرایش آدرس</a></li>
+                        <li><a href="{% url 'order-history' %}">تاریخچه سفارشات</a></li>
+                        <li><a href="{% url 'order-details' order.id %}" class="active">جزئیات سفارشات</a></li>
+                        <li><a href="{% url 'address' %}">آدرس</a></li>
+                        <li><a href="{% url 'change_password' %}">گذرواژه</a></li>
+                        <li><a href="{% url 'logout' %}">خروج</a></li>
+                    </ul>
+                </div>
+
+                <!-- بخش اصلی جزئیات سفارش -->
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-6">
+                            <h3 class="order-details-title">جزئیات سفارش</h3>
+                            <div class="order-details-area">
+                                <div class="cart-totals">
+                                    <h3>شماره سفارش: #{{ order.id }}</h3>
+                                    <p>سفارش ایجاد شده در: {{ order.created_at|date:"d M Y" }}</p>
+                                    <a href="{% url 'order-history' %}" class="default-btn">تاریخچه</a>
+
+                                    <ul>
+                                        {% for item in order.items.all %}
+                                            <li>{{ item.product.title }} x {{ item.quantity }}
+                                                <span>{{ item.total_price }} تومان</span></li>
+                                        {% endfor %}
+                                        <li>مجموع <span>{{ order.total }} تومان</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6">
+                            <div class="address-details-area">
+                                <div class="cart-totals">
+                                    <h3>جزئیات آدرس</h3>
+                                    <ul>
+                                        <li class="p-0">{{ order.user.get_full_name }}</li>
+                                        <li><span>آدرس:</span> {{ order.user.profile.address }}</li>
+                                        <li><span>تلفن:</span> <a
+                                                href="tel:{{ order.user.profile.phone }}">{{ order.user.profile.phone }}</a>
+                                        </li>
+                                        <li><span>ایمیل:</span> <a
+                                                href="mailto:{{ order.user.email }}">{{ order.user.email }}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

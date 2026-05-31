@@ -1,0 +1,190 @@
+{% load static %}
+<div class="footer-area pt-54 pb-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <h3>اطلاعات سریع</h3>
+                    <ul class="info-list">
+                        <li>
+                            <i class="ri-map-pin-line"></i>
+                            ایران ، استان تهران ، میدان آزادی
+                        </li>
+                        <li>
+                            <i class="ri-phone-line"></i>
+                            <a href="tel:+1-(514)-321-4566">+1 (514) 321-4566</a>
+                        </li>
+                        <li>
+                            <i class="ri-mail-send-line"></i>
+                            <a href="mailto:hello@ehay.com">hello@ehay.com</a>
+                        </li>
+                        <li>
+                            <i class="ri-time-line"></i>
+                            دوشنبه تا جمعه 8:00 صبح - 8:00 عصر
+                        </li>
+                    </ul>
+                    <ul class="social-link">
+                        <li>
+                            <span>در ارتباط باش:</span>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/" target="_blank">
+                                <i class="ri-facebook-fill"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.twitter.com/" target="_blank">
+                                <i class="ri-twitter-fill"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/" target="_blank">
+                                <i class="ri-linkedin-fill"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/" target="_blank">
+                                <i class="ri-instagram-fill"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <h3>اطلاعات</h3>
+                    <ul class="import-link">
+                        <li>
+                            <a href="{% url 'about_us' %}">درباره</a>
+                        </li>
+                        <li>
+                            <a href="#">پیگیری سفارش</a>  <!-- موقت -->
+                        </li>
+                        <li>
+                            <a href="#">قوانین و ضوابط</a>
+                        </li>
+                        <li>
+                            <a href="#">موقعیت فروشگاه</a>
+                        </li>
+                        <li>
+                            <a href="#">حریم خصوصی</a>
+                        </li>
+                        <li>
+                            <a href="#">اطلاعات تحویل</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <h3>خدمات مشتری</h3>
+                    <ul class="import-link">
+                        <li>
+                            <a href="#">مرکز کمک</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'product:product-list' %}">محصولات</a>
+                        </li>
+                        <li>
+                            <a href="#">تضمین بازگشت پول!</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'blog:blog-list' %}">وبلاگ</a>
+                        </li>
+                        <li>
+                            <a href="#">دسترسی</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contact_us' %}">تماس با ما</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <h3>برنامه را در تلفن همراه بارگیری کنید</h3>
+                    <p>30 درصد تخفیف در اولین سفارش شما</p>
+                    <ul class="app-btn">
+                        <li>
+                            <a href="https://www.apple.com/store" target="_blank">
+                                <img src="{% static 'images/app-store.png' %}" alt="اپ استور">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://play.google.com/store/apps" target="_blank">
+                                <img src="{% static 'images/google-play.png' %}" alt="گوگل پلی">
+                            </a>
+                        </li>
+                    </ul>
+                    <span class="payment">ما پرداخت را از این طریق می پذیریم</span>
+                    <ul class="payment-option">
+                        <li>
+                            <img src="{% static 'images/payment/payment-1.png' %}" alt="پرداخت ۱">
+                        </li>
+                        <li>
+                            <img src="{% static 'images/payment/payment-2.png' %}" alt="پرداخت ۲">
+                        </li>
+                        <li>
+                            <img src="{% static 'images/payment/payment-3.png' %}" alt="پرداخت ۳">
+                        </li>
+                        <li>
+                            <img src="{% static 'images/payment/payment-4.png' %}" alt="پرداخت ۴">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="copy-right-area">
+    <div class="container">
+        <p>کپی رایت © 1400 ایهای. تمام حقوق قالب محفوظ است. طراحی توسط
+            <a href="#" target="_blank">zeinab rahmani</a>
+        </p>
+    </div>
+</div>
+
+<!-- مودال محصول (میتونی حذفش کنی یا داینامیکش کنی) -->
+<div class="modal fade product-view-one" id="exampleModal">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <button type="button" class="close" data-bs-dismiss="modal">
+                <span aria-hidden="true">
+                    <i class="ri-close-line"></i>
+                </span>
+            </button>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="product-view-one-image">
+                        <!-- این بخش رو می‌تونی حذف کنی چون در صفحه محصول داریم -->
+                        <div id="big" class="owl-carousel owl-theme">
+                            <div class="item">
+                                <img src="{% static 'images/products/product-1.jpg' %}" alt="محصول">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="product-content">
+                        <h3>محصول ویژه</h3>
+                        <div class="price">
+                            <span class="new-price">11900 تومان <del>21900 تومان</del></span>
+                            <span class="in-stock">در انبار</span>
+                        </div>
+                        <p>برای مشاهده جزئیات محصول، روی محصول مورد نظر کلیک کنید.</p>
+                        <div class="product-add-to-cart">
+                            <a href="{% url 'product:product-list' %}" class="default-btn">
+                                <i class="ri-shopping-cart-line"></i>
+                                مشاهده محصولات
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="go-top">
+    <i class="ri-arrow-up-s-fill"></i>
+</div>

@@ -1,0 +1,83 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+
+{% block content %}
+
+<section class="blog-details-area pt-54 pb-30">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <!-- Blog Content -->
+            <div class="col-lg-8">
+                <div class="blog-details-wrap">
+
+                    <!-- Blog Image -->
+                    <div class="blog-details-img mb-4">
+                        {% if blog.image %}
+                            <img src="{{ blog.image.url }}" class="img-fluid w-100" alt="{{ blog.title }}">
+                        {% else %}
+                            <div style="height:220px; background:#eee;"
+                                 class="d-flex justify-content-center align-items-center">
+                                <span>بدون تصویر</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <hr>
+                    <h1 class="blog-details-title mb-3">
+                        {{ blog.title }}
+                    </h1>
+
+                    <!-- Blog Content -->
+                    <div class="blog-details-content">
+                        {{ blog.description|safe }}
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <aside class="blog-sidebar">
+
+                    <!-- Latest Blogs -->
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-title">آخرین مقالات</h3>
+
+                        {% for item in latest_blogs %}
+                            <div class="sidebar-blog d-flex mb-3">
+                                <a href="{{ item.get_absolute_url }}" class="sidebar-blog-img me-2">
+                                    {% if item.image %}
+                                        <img src="{{ item.image.url }}" alt="{{ item.title }}" style="width:80px; height:60px; object-fit:cover;">
+                                    {% else %}
+                                        <div style="width:80px; height:60px; background:#eee;"></div>
+                                    {% endif %}
+                                </a>
+
+                                <div class="sidebar-blog-content">
+                                    <h4 class="mb-1">
+                                        <a href="{{ item.get_absolute_url }}">
+                                            {{ item.title|truncatechars:45 }}
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>مقاله‌ای وجود ندارد</p>
+                        {% endfor %}
+
+                    </div>
+
+                </aside>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
